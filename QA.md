@@ -68,3 +68,9 @@ Final verification: all 41 tests passed, including equal/missing legacy timestam
 - Isolated browser fixture: manual availability check made two source requests, completed 2/2, survived reload, and made no additional source/Steam requests on reopen. The full fixture log stayed at 6 requests (config, library, 2 achievement fixtures, 2 availability fixtures).
 - Browser QA at 390px and 320px: no horizontal overflow, full-width sheets and 44px primary actions; grouped disclosure results and historical unlock labels work. Physical iPhone/Safari testing remains unverified.
 - Deployed Edge Function v4 with JWT verification retained. Production availability endpoint returned 200 with TF2's four source flags, without a Steam profile lookup.
+
+- Final production browser verification: 505/505 source lists match cached Steam counts and flagged IDs; 0 unknown. 1,500 locked flags across 46 games (1,397 reported unobtainable, 55 conditional, 48 broken-but-obtainable), 17 historical unlocks. The library still shows 2,387/28,740 achievements and 7 perfect games across 505 games. Expanded Batman: Arkham Origins displays its 11 matched locked achievements and SteamHunters source link. The live app and snapshot match the published source byte-for-byte.
+
+## Finish next eligibility · 20 October
+
+Automatic library focus, momentum queue, and Finish next suggestions now share one eligibility function: started, incomplete, readable progress; matching availability counts and flagged IDs; no locked reported unobtainable or conditional achievements. Unlocked historic flags do not disqualify a game. Broken-but-obtainable achievements remain eligible, with a workaround note. Manual pins remain saved and visible with their existing issue badges. Missing coverage never becomes an automatic recommendation. Demo behavior remains separate and fictional. All 51 tests pass.
