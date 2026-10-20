@@ -37,3 +37,9 @@ Complete live library scan: 505 games checked; 374 games with achievements; 2,38
 Browser QA used a separate local fixture origin. Initial connect made exactly four API calls (config, library, two game details). Reload restored stats and full game details from IndexedDB; repeated Refresh clicks and opening saved details added zero API calls. The 15-minute cooldown message was verified.
 
 Production source commit: bd5aae17a9c14dfff8880546611a2103475a8b27. Cache is per browser/device. New installs require one initial scan. There is no automatic refresh or polling on cached visits.
+
+Production verification completed: all 505 games saved, 2,387 of 28,740 achievements, 7 perfect games, zero unavailable. After a full reload, these exact totals returned with the saved-data/no-automatic-refresh notice and no new scan. Screenshot: ../checkpoint-cached-stats.png.
+
+## Availability checker — 20 October 2026
+
+29 scoped tests passed. Five availability tests cover game-scoped matches, conditional versus reported status, unlocked achievements excluded from remaining counts, missing progress and unknown/rare/error results. A local browser fixture confirmed report counts, source links, details navigation, achievement-level warnings and the availability filter. Its API counter stayed at the original four calls after checking the report and opening details. Catalog coverage is explicitly limited to Mad Max and Team Fortress 2; no universal availability verdict is claimed. No cache invalidation or Steam rescan is required for this update.
