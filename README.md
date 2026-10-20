@@ -97,3 +97,7 @@ Check availability compares the cached library with a small sourced catalog. The
 ## Current players
 
 Opening a real game detail requests the concurrent online player count from Valve’s GetNumberOfCurrentPlayers endpoint through the secure edge function. Counts are cached for 15 minutes in this browser; there is no polling or library-wide player scan. The edge function also uses a best-effort per-instance cache and request coalescing; separate edge instances or cold starts can fetch a newer count. The checked time is displayed. Unavailable counts are not converted to zero. The detail view links to the game’s SteamCharts page for historical trends. These are Steam player counts, not scraped SteamCharts data, and they exclude users disconnected from Steam.
+
+## Interface polish
+
+The published frontend uses system typography, grouped game information, readable player counts, quieter cache status, accessible disclosures for detailed availability evidence, and bottom-aligned mobile sheets. Sheets support animated button/backdrop/Escape dismissal and respect reduced motion. Mobile search fields use 16px text to avoid focus zoom, key actions have 44px targets, and Refresh remains visible at narrow widths. This visual pass does not invalidate saved Steam data or change request/cooldown behavior.

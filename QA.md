@@ -49,3 +49,9 @@ Final real-profile verification matched the exact English Steam Replay names, in
 ## Current players
 
 36 scoped tests passed. Player tests cover the fixed, keyless Valve endpoint, real zero counts, response validation, invalid IDs, coalesced concurrent calls, 15-minute expiry, browser reuse, and the absence of profile/library calls on the players endpoint. JWT validation, CORS and the existing rate limit are retained.
+
+Production verification: the final report shows 3 locked achievements to review across two games and two historical unlocks, with 503 games explicitly unreviewed. TF2 detail displayed a real Steam player count and SteamCharts trends link. Closing/reopening reused the same count and checked time immediately. No achievement/library scan restarted. Screenshots: ../checkpoint-availability.png and ../checkpoint-player-count.png.
+
+## iOS-style polish — 20 October 2026
+
+Desktop browser review covered grouped game rows, player count typography, warning disclosure/links, Escape dismissal, close-button dismissal, and preserving expanded warnings during pin/unpin updates. Responsive browser frames at 390px and 320px confirmed no horizontal page overflow, full-width bottom sheets, visible Refresh, and minimum 44px heights for the measured primary mobile controls. Inputs use 16px text; reduced-motion styles and dismissal bypass are included. These are responsive browser checks, not physical iPhone/Safari validation. Saved profile data and 15-minute refresh/player caches are preserved.
