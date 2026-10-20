@@ -82,3 +82,7 @@ Finish next and library focus/momentum now also exclude locked broken-but-obtain
 ## Expanded Finish next · 20 October
 
 Finish next now renders every eligible started/incomplete game in the responsive game grid, highest completion first. Sorting uses exact unlocked/total ratios rather than rounded percentages, with remaining count and app ID as deterministic tie-breakers. Manual pins remain in a separately labelled shortlist. The library's compact focus section and the normal-play availability exclusions remain intact. All 53 tests pass, including retaining more than four candidates and exact-progress ordering when displayed percentages tie. No Steam requests added.
+
+## Remaining counts and sorting · 20 October
+
+Every readable Finish next card (including manual pins) now shows its remaining achievement count with singular/plural labels. Suggestions can sort by exact completion ratio or fewest remaining; count ties use completion, then app ID. Sort preference is saved locally and retained through rerenders. Library sorting and compact focus are separate. All normal-play exclusions remain; all 54 tests pass. No Steam/API requests added.

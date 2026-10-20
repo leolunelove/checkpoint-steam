@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {finishCandidates} from '../docs/finish-next.mjs?v=3';
+import {finishCandidates} from '../docs/finish-next.mjs?v=4';
 import {loadAvailability} from '../docs/availability-cache.mjs?v=1';
 const make=(id,overrides={})=>({id,status:'ready',total:2,unlocked:1,percent:50,achievements:[{id:'done',name:'Done',unlocked:true},{id:'left',name:'Left',unlocked:false}],...overrides});
 const check=async(id,code,apiName='left',count=2)=>loadAvailability(id,async()=>({appId:id,fetchedAt:Date.now(),achievementCount:count,flags:code?[{apiName,name:'Source name',obtainability:code}]:[]}));
@@ -30,4 +30,11 @@ test('the complete eligible list is retained and rounded percentage ties use exa
  const games=[make(1,{total:1000,unlocked:601,percent:60}),make(2,{total:1000,unlocked:604,percent:60}),...Array.from({length:8},(_,i)=>make(i+3,{total:100,unlocked:i+1,percent:i+1}))];
  const result=finishCandidates(games,{demo:true});assert.equal(result.length,10);assert.deepEqual(result.slice(0,2).map(g=>g.id),[2,1]);
  for(let i=1;i<result.length;i++)assert.ok(result[i-1].unlocked/result[i-1].total>=result[i].unlocked/result[i].total);
+});
+
+test('fewest remaining sorts by count, breaks ties by completion and retains eligibility',async()=>{
+ const games=[make(9876504),make(9876503),make(20,{total:100,unlocked:95}),make(21,{total:3,unlocked:2}),make(22,{total:10,unlocked:9})];
+ const eligible=finishCandidates(games,{sort:'remaining'});assert.deepEqual(eligible.map(g=>g.id),[9876504]);
+ const result=finishCandidates(games.slice(2),{demo:true,sort:'remaining'});assert.deepEqual(result.map(g=>g.id),[22,21,20]);assert.deepEqual(result.map(g=>g.total-g.unlocked),[1,1,5]);
+ assert.deepEqual(finishCandidates(games.slice(2),{demo:true}).map(g=>g.id),[20,22,21]);
 });

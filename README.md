@@ -115,3 +115,5 @@ The separate `availability` Edge Function endpoint accepts one validated app ID 
 Finish next recommendations use saved availability data without making network requests. Games with locked unobtainable/reported-broken or conditional flags, missing coverage, mismatched source data, or unavailable progress are excluded. Historic unlocks are allowed; locked broken-but-obtainable achievements are excluded too. Explicitly saved pins remain on the user's shortlist.
 
 Finish next shows the full eligible in-progress library in a responsive grid, sorted by exact achievement completion ratio descending; manual pins have a separate labelled section. Library focus stays compact.
+
+Finish next cards show achievements left. Its local sort preference switches between closest completion and fewest remaining (ties use completion percentage), without refreshing Steam.
