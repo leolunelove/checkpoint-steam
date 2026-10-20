@@ -57,3 +57,14 @@ Production verification: the final report shows 3 locked achievements to review 
 Desktop browser review covered grouped game rows, player count typography, warning disclosure/links, Escape dismissal, close-button dismissal, and preserving expanded warnings during pin/unpin updates. Responsive browser frames at 390px and 320px confirmed no horizontal page overflow, full-width bottom sheets, visible Refresh, and minimum 44px heights for the measured primary mobile controls. Inputs use 16px text; reduced-motion styles and dismissal bypass are included. These are responsive browser checks, not physical iPhone/Safari validation. Saved profile data and 15-minute refresh/player caches are preserved.
 
 A live visual check exposed an older tab overwriting the legacy cache with an incomplete snapshot. The cache now migrates to a separate last-v2 record and atomically merges the newest per-game checks. Four regression tests cover partial writes, newer metadata, removed games and account separation. A browser fixture explicitly simulated both modern and legacy stale saves; all 2/2 completed game records remained intact.
+
+Final verification: all 41 tests passed, including equal/missing legacy timestamps. The protected real profile cache was restored by checking only the 197 missing games, then a full published-app reload retained 505 games, 2,387/28,740 achievements and 7 perfect games, without a new scan. Public game-detail and library screenshots were captured after the final reload. Final commit: 4fa65d62b89fa80ec48fb3b420f82fe400063431.
+
+## 20 October: library-wide availability
+
+- Replaced the two-game coverage limit with public SteamHunters app/achievement classifications and a separate on-demand source check. All source flags match by Steam API name; unknown enum values, failed requests, absent progress, mismatched counts and missing IDs cannot become an all-clear result.
+- Kept the existing sourced Mad Max and TF2 explanations, unchanged actual Steam statistics, historical unlocks, hidden-achievement protection, and profile-cache isolation.
+- 47 Node tests pass, including fixed-host proxy validation, all three source flag categories, coalescing/TTL, unknown classifications, ID rather than translated-name matching, partial coverage and historical unlock separation.
+- Isolated browser fixture: manual availability check made two source requests, completed 2/2, survived reload, and made no additional source/Steam requests on reopen. The full fixture log stayed at 6 requests (config, library, 2 achievement fixtures, 2 availability fixtures).
+- Browser QA at 390px and 320px: no horizontal overflow, full-width sheets and 44px primary actions; grouped disclosure results and historical unlock labels work. Physical iPhone/Safari testing remains unverified.
+- Deployed Edge Function v4 with JWT verification retained. Production availability endpoint returned 200 with TF2's four source flags, without a Steam profile lookup.

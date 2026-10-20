@@ -1,3 +1,4 @@
+import { cachedAvailability, freshAvailability } from './availability-cache.mjs?v=1';
 // A deliberately limited, sourced catalog. Absence is unknown, never a clean bill of health.
 export const reviewedAt = '2026-10-20';
 export const catalog = [
@@ -13,9 +14,23 @@ export const catalog = [
   sources:[{title:'Valve issue tracker: YouTube Replay support #2277',url:'https://github.com/ValveSoftware/Source-1-Games/issues/2277'}]}
 ];
 const normalize = text => String(text || '').normalize('NFKC').toLowerCase().replace(/[^a-z0-9]/g,'');
-export function rulesFor(game) { return catalog.filter(rule=>rule.appId===game.id); }
+const memo=new Map();
+export function rulesFor(game) {
+ const source=cachedAvailability(game.id),previous=memo.get(game.id);
+ if(previous?.source===source)return previous.rules;
+ const manual=catalog.filter(rule=>rule.appId===game.id);
+ if(!source){memo.set(game.id,{source,rules:manual});return manual;}
+ const flags=source.flags.filter(a=>!manual.some(rule=>rule.achievementNames.some(name=>normalize(name)===normalize(a.name))));
+ const labels={1:'Broken but obtainable',2:'Conditionally obtainable',3:'Reported unobtainable'};
+ const reasons={1:'SteamHunters marks these achievements as broken but obtainable. A workaround may be needed.',2:'SteamHunters marks these achievements as conditionally obtainable. Requirements may depend on your save, account, region, version or a workaround.',3:'SteamHunters marks these achievements as unobtainable through normal play.'};
+ const rules=[...manual,...[3,2,1].flatMap(code=>{
+  const matches=flags.filter(a=>a.obtainability===code);if(!matches.length)return [];
+  return [{appId:game.id,key:`hunters-${code}`,kind:code===3?'unobtainable':code===2?'conditional':'broken',label:labels[code],achievementIds:matches.map(a=>a.apiName),achievementNames:matches.map(a=>a.name),reason:reasons[code],caveat:'Community-maintained classification, not a Valve guarantee. Open the source for the conditions and latest discussion.',sources:[{title:'SteamHunters achievement details',url:`https://steamhunters.com/apps/${game.id}/achievements`}]}];
+ })];
+ memo.set(game.id,{source,rules});return rules;
+}
 export function achievementIssues(game, achievement) {
- return rulesFor(game).filter(rule=>rule.achievementNames.some(name=>normalize(name)===normalize(achievement.name)));
+ return rulesFor(game).filter(rule=>rule.achievementIds?rule.achievementIds.includes(achievement.id):rule.achievementNames.some(name=>normalize(name)===normalize(achievement.name)));
 }
 export function gameFindings(game) {
  return (game.achievements || []).flatMap(achievement=>achievementIssues(game,achievement).map(rule=>({rule,achievement})));
@@ -25,4 +40,10 @@ export function libraryAvailability(games) {
  const findings=listed.flatMap(game=>gameFindings(game).map(finding=>({...finding,game})));
  return {listed,findings,remaining:findings.filter(item=>!item.achievement.unlocked),unreviewed:games.length-listed.length,
   missingProgress:listed.filter(game=>!['ready','none'].includes(game.status)).length};
+}
+
+export function sourceCoverage(games) {
+ const values=games.map(game=>({game,source:cachedAvailability(game.id)}));
+ const checked=values.filter(({game,source})=>source&&source.achievementCount===(game.total||0)&&['ready','none'].includes(game.status)&&source.flags.every(flag=>(game.achievements||[]).some(a=>a.id===flag.apiName)));
+ return {checked:checked.length,fresh:checked.filter(({source})=>freshAvailability(source)).length,unknown:games.length-checked.length,stale:checked.filter(({source})=>!freshAvailability(source)).length,flagged:values.filter(({source})=>source?.flags.length).length};
 }

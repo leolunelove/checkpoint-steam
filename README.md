@@ -103,3 +103,11 @@ Opening a real game detail requests the concurrent online player count from Valv
 The published frontend uses system typography, grouped game information, readable player counts, quieter cache status, accessible disclosures for detailed availability evidence, and bottom-aligned mobile sheets. Sheets support animated button/backdrop/Escape dismissal and respect reduced motion. Mobile search fields use 16px text to avoid focus zoom, key actions have 44px targets, and Refresh remains visible at narrow widths. This visual pass does not invalidate saved Steam data or change request/cooldown behavior.
 
 Cache snapshots now use a versioned record isolated from legacy tabs and merge game results atomically by their checked time. Older partial snapshots cannot discard completed checks, and newer library metadata still controls additions/removals. Existing cached data migrates locally without a Steam request.
+
+### Library-wide availability
+
+Availability checks use the public SteamHunters achievement classifications (0 obtainable, 1 broken but obtainable, 2 conditional, 3 unobtainable). `docs/availability-data.mjs` is a dated, public app-only snapshot; it contains no profile, ownership, progress, or credentials. These are community classifications, not Valve guarantees. Detailed conditions and discussions are linked per game. Existing Mad Max and TF2 sourced notes remain as additional context.
+
+The browser matches source flags by Steam achievement API name against the saved profile, retains historical unlocks, and never changes Steam totals. Missing data, unknown classifications, count mismatches, and unavailable progress remain unknown. A source with no flags does not prove attainability.
+
+The separate `availability` Edge Function endpoint accepts one validated app ID and calls only the fixed SteamHunters endpoint, with no Steam key or profile sent upstream. Results are cached 24 hours in the browser and in each warm Edge Function instance (the latter is not durable or shared). Opening the report makes no API calls. A manual check fetches only missing/stale source entries, one paced worker, stops after three consecutive failures, and can be paused. There is no polling, automatic Steam scan, or forced source refresh within the TTL.

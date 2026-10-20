@@ -16,3 +16,13 @@ dialog{background:#1c201d;border:1px solid #ffffff14;border-radius:28px;box-shad
 @media(max-width:760px){.toolbar>.segmented button,.achievement-toolbar .segmented button{min-height:44px}}
 @media(max-width:760px){.players-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}.players-panel>div{min-width:0}.players-panel a{white-space:nowrap}.players-panel small{max-width:185px}}
 @media(max-width:370px){.players-panel small{max-width:145px}.players-panel a{padding-left:4px}}
+
+/* Quiet, resumable library-wide availability checks. */
+.availability-check-status{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid var(--line,#ffffff14)}
+.availability-check-status>div{display:grid;gap:5px}.availability-check-status span{font-size:12px;color:var(--muted,#9295a0)}
+.availability-check-status button:disabled{opacity:.55;cursor:default}.availability-unknown{margin:16px 0;color:var(--muted,#9295a0);font-size:12px;line-height:1.7}
+.availability-unknown summary{cursor:pointer;min-height:44px;display:flex;align-items:center}.availability-unknown p{overflow-wrap:anywhere}
+@media(max-width:600px){.availability-check-status{align-items:stretch;flex-direction:column}.availability-check-status button{width:100%}}
+.availability-result>summary{display:flex;align-items:center;gap:12px;min-height:58px;cursor:pointer;list-style:none;font-weight:650;letter-spacing:-.2px}
+.availability-result>summary::-webkit-details-marker{display:none}.availability-result>summary>span{flex:1}.availability-result>summary small{font-size:12px;color:var(--muted,#9295a0);white-space:nowrap;font-weight:450}.availability-result>summary svg{width:16px;height:16px;flex:none;transition:transform .2s ease}.availability-result[open]>summary svg{transform:rotate(90deg)}.availability-result-body{padding-top:12px}.availability-result:not([open]){padding-top:8px;padding-bottom:8px}
+@media(prefers-reduced-motion:reduce){.availability-result>summary svg{transition:none}}
