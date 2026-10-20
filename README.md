@@ -117,3 +117,5 @@ Finish next recommendations use saved availability data without making network r
 Finish next shows the full eligible in-progress library in a responsive grid, sorted by exact achievement completion ratio descending; manual pins have a separate labelled section. Library focus stays compact.
 
 Finish next cards show achievements left. Its local sort preference switches between closest completion and fewest remaining (ties use completion percentage), without refreshing Steam.
+
+Remaining-achievement rarity uses cached Steam global percentages, excluding already unlocked achievements. Cards show the average and rarest outstanding rate and partial-data coverage. Most common remaining sorting uses the rarest outstanding rate first, with incomplete data last. Unlock rates are a heuristic, not a difficulty or time estimate.

@@ -86,3 +86,7 @@ Finish next now renders every eligible started/incomplete game in the responsive
 ## Remaining counts and sorting · 20 October
 
 Every readable Finish next card (including manual pins) now shows its remaining achievement count with singular/plural labels. Suggestions can sort by exact completion ratio or fewest remaining; count ties use completion, then app ID. Sort preference is saved locally and retained through rerenders. Library sorting and compact focus are separate. All normal-play exclusions remain; all 54 tests pass. No Steam/API requests added.
+
+## Remaining rarity summaries · 20 October
+
+Library and Finish next cards now summarize Steam global unlock rates for locked achievements only: average, rarest, and explicit partial/unavailable coverage. Genuine zero rates remain zero, while null/nonfinite/out-of-range values stay unknown. Finish next adds a saved Most common remaining sort, ranking fully covered games by their rarest outstanding achievement descending, then average; partial/unknown rate data goes last. This is explicitly an unlock-rate comparison, not a difficulty guarantee. All normal-play filters remain. 57 tests pass. No Steam requests or rescans added.

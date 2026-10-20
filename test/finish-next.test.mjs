@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {finishCandidates} from '../docs/finish-next.mjs?v=4';
+import {finishCandidates} from '../docs/finish-next.mjs?v=5';
 import {loadAvailability} from '../docs/availability-cache.mjs?v=1';
 const make=(id,overrides={})=>({id,status:'ready',total:2,unlocked:1,percent:50,achievements:[{id:'done',name:'Done',unlocked:true},{id:'left',name:'Left',unlocked:false}],...overrides});
 const check=async(id,code,apiName='left',count=2)=>loadAvailability(id,async()=>({appId:id,fetchedAt:Date.now(),achievementCount:count,flags:code?[{apiName,name:'Source name',obtainability:code}]:[]}));
