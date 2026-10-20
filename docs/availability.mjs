@@ -7,7 +7,7 @@ export const catalog = [
   caveat:'Older qualifying saves and community fixes may change what is possible. Steam cannot tell us whether your save meets the condition.',
   sources:[{title:'WB Games: affected challenges and achievement',url:'https://wbgamessupport.wbgames.com/hc/en-us/articles/360058007413-Mad-Max-Status-Update'},{title:'Community fix author: MadMaxFix',url:'https://www.nexusmods.com/madmax/mods/215?tab=description'}]},
  {appId:440, key:'tf2-youtube-replays', label:'Reported broken', kind:'reported',
-  achievementNames:['Home Movie','Local Cinema','Indie Film','Blockbuster'],
+  achievementNames:['Home Movie','Local Cinema Star','Indie Film Sensation','Blockbuster'],
   reason:'Players report that the retired YouTube integration prevents the normal Replay upload/view requirements from working. The report remains open in Valve’s public issue tracker.',
   caveat:'This is a community bug report, not a Valve certification that every workaround is impossible. Check the linked discussion for changes.',
   sources:[{title:'Valve issue tracker: YouTube Replay support #2277',url:'https://github.com/ValveSoftware/Source-1-Games/issues/2277'}]}

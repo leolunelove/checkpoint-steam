@@ -1,4 +1,4 @@
-import { catalog, reviewedAt, rulesFor, achievementIssues, gameFindings, libraryAvailability } from './availability.mjs';
+import { catalog, reviewedAt, rulesFor, achievementIssues, gameFindings, libraryAvailability } from './availability.mjs?v=2';
 import { backend } from './connection.js';
 import { demo } from './demo.js';
 import { REFRESH_COOLDOWN, matchesProfile, mergeLibrary, readProfile, saveProfile, forgetProfile } from './profile-cache.mjs';

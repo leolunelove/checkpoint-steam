@@ -30,3 +30,10 @@ test('bug reports are distinguished from official conditional service shutdowns'
  assert.equal(achievementIssues({id:440},{name:"That's a Wrap"}).length,0);
  for(const rule of catalog){assert.ok(rule.sources.length);for(const source of rule.sources)assert.equal(new URL(source.url).protocol,'https:');}
 });
+
+test('all four Steam Replay names are matched and historical unlocks are counted separately',()=>{
+ const names=['Home Movie','Local Cinema Star','Indie Film Sensation','Blockbuster'];
+ const report=libraryAvailability([{id:440,status:'ready',achievements:names.map((name,i)=>({name,unlocked:i<2}))}]);
+ assert.equal(report.findings.length,4);assert.equal(report.remaining.length,2);
+ assert.deepEqual(report.remaining.map(item=>item.achievement.name),names.slice(2));
+});
