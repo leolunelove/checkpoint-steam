@@ -74,3 +74,7 @@ Final verification: all 41 tests passed, including equal/missing legacy timestam
 ## Finish next eligibility · 20 October
 
 Automatic library focus, momentum queue, and Finish next suggestions now share one eligibility function: started, incomplete, readable progress; matching availability counts and flagged IDs; no locked reported unobtainable or conditional achievements. Unlocked historic flags do not disqualify a game. Broken-but-obtainable achievements remain eligible, with a workaround note. Manual pins remain saved and visible with their existing issue badges. Missing coverage never becomes an automatic recommendation. Demo behavior remains separate and fictional. All 51 tests pass.
+
+## Normal-play suggestions · 20 October
+
+Finish next and library focus/momentum now also exclude locked broken-but-obtainable flags. Unlocked historical workaround achievements remain eligible if the remaining achievements have no flags. Manual pins remain untouched. Removed the now-inapplicable workaround suggestion copy. All 52 tests pass; no Steam requests or cache changes are required.
