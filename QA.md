@@ -78,3 +78,7 @@ Automatic library focus, momentum queue, and Finish next suggestions now share o
 ## Normal-play suggestions · 20 October
 
 Finish next and library focus/momentum now also exclude locked broken-but-obtainable flags. Unlocked historical workaround achievements remain eligible if the remaining achievements have no flags. Manual pins remain untouched. Removed the now-inapplicable workaround suggestion copy. All 52 tests pass; no Steam requests or cache changes are required.
+
+## Expanded Finish next · 20 October
+
+Finish next now renders every eligible started/incomplete game in the responsive game grid, highest completion first. Sorting uses exact unlocked/total ratios rather than rounded percentages, with remaining count and app ID as deterministic tie-breakers. Manual pins remain in a separately labelled shortlist. The library's compact focus section and the normal-play availability exclusions remain intact. All 53 tests pass, including retaining more than four candidates and exact-progress ordering when displayed percentages tie. No Steam requests added.
