@@ -101,3 +101,5 @@ Opening a real game detail requests the concurrent online player count from Valv
 ## Interface polish
 
 The published frontend uses system typography, grouped game information, readable player counts, quieter cache status, accessible disclosures for detailed availability evidence, and bottom-aligned mobile sheets. Sheets support animated button/backdrop/Escape dismissal and respect reduced motion. Mobile search fields use 16px text to avoid focus zoom, key actions have 44px targets, and Refresh remains visible at narrow widths. This visual pass does not invalidate saved Steam data or change request/cooldown behavior.
+
+Cache snapshots now use a versioned record isolated from legacy tabs and merge game results atomically by their checked time. Older partial snapshots cannot discard completed checks, and newer library metadata still controls additions/removals. Existing cached data migrates locally without a Steam request.

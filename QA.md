@@ -55,3 +55,5 @@ Production verification: the final report shows 3 locked achievements to review 
 ## iOS-style polish — 20 October 2026
 
 Desktop browser review covered grouped game rows, player count typography, warning disclosure/links, Escape dismissal, close-button dismissal, and preserving expanded warnings during pin/unpin updates. Responsive browser frames at 390px and 320px confirmed no horizontal page overflow, full-width bottom sheets, visible Refresh, and minimum 44px heights for the measured primary mobile controls. Inputs use 16px text; reduced-motion styles and dismissal bypass are included. These are responsive browser checks, not physical iPhone/Safari validation. Saved profile data and 15-minute refresh/player caches are preserved.
+
+A live visual check exposed an older tab overwriting the legacy cache with an incomplete snapshot. The cache now migrates to a separate last-v2 record and atomically merges the newest per-game checks. Four regression tests cover partial writes, newer metadata, removed games and account separation. A browser fixture explicitly simulated both modern and legacy stale saves; all 2/2 completed game records remained intact.

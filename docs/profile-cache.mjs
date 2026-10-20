@@ -32,37 +32,59 @@ function openDatabase() {
  });
  return database;
 }
-export async function readProfile() {
- try {
-  const db = await openDatabase();
-  return await new Promise((resolve, reject) => {
-   const request = db.transaction('profiles').objectStore('profiles').get('last');
-   request.onsuccess = () => resolve(request.result?.version === 1 ? request.result.data : null);
-   request.onerror = () => reject(request.error);
-  });
- } catch { return null; }
+// A separate key isolates modern snapshots from older, still-open app versions.
+const CURRENT_KEY='last-v2';
+export function mergeSnapshots(incoming,stored){
+ if(!stored||incoming?.mode!=='live'||stored.profile?.id!==incoming.profile?.id)return incoming;
+ const base=(incoming.fetchedAt||0)>=(stored.fetchedAt||0)?incoming:stored;
+ const other=base===incoming?stored:incoming;
+ const alternate=new Map(other.games.map(game=>[game.id,game]));
+ return {...base,refreshStartedAt:Math.max(incoming.refreshStartedAt||0,stored.refreshStartedAt||0),
+  aliases:[...new Set([...(incoming.aliases||[]),...(stored.aliases||[])])],
+  games:base.games.map(game=>{
+   const saved=alternate.get(game.id);
+   if(!saved||(saved.checkedAt||0)<=(game.checkedAt||0))return game;
+   return {...saved,id:game.id,name:game.name,minutes:game.minutes,lastPlayed:game.lastPlayed};
+  })};
 }
-export async function saveProfile(data) {
- try {
-  const db = await openDatabase();
-  await new Promise((resolve, reject) => {
-   const transaction = db.transaction('profiles', 'readwrite');
-   transaction.objectStore('profiles').put({version:1, data}, 'last');
-   transaction.oncomplete = resolve;
-   transaction.onerror = () => reject(transaction.error);
-   transaction.onabort = () => reject(transaction.error);
+export async function readProfile(){
+ try{
+  const db=await openDatabase();
+  const record=await new Promise((resolve,reject)=>{
+   const store=db.transaction('profiles').objectStore('profiles');
+   const current=store.get(CURRENT_KEY);
+   current.onsuccess=()=>{
+    if(current.result?.version===2){resolve({data:current.result.data});return;}
+    const legacy=store.get('last');
+    legacy.onsuccess=()=>resolve({data:legacy.result?.version===1?legacy.result.data:null,legacy:true});
+    legacy.onerror=()=>reject(legacy.error);
+   };
+   current.onerror=()=>reject(current.error);
   });
-  return true;
- } catch { return false; }
+  if(record.legacy&&record.data)await saveProfile(record.data);
+  return record.data||null;
+ }catch{return null;}
 }
-export async function forgetProfile() {
- try {
-  const db = await openDatabase();
-  await new Promise((resolve, reject) => {
-   const transaction = db.transaction('profiles','readwrite');
-   transaction.objectStore('profiles').delete('last');
-   transaction.oncomplete = resolve;
-   transaction.onerror = () => reject(transaction.error);
+export async function saveProfile(data){
+ try{
+  const snapshot=structuredClone(data),db=await openDatabase();
+  await new Promise((resolve,reject)=>{
+   const transaction=db.transaction('profiles','readwrite'),store=transaction.objectStore('profiles');
+   const read=store.get(CURRENT_KEY);
+   read.onsuccess=()=>store.put({version:2,data:mergeSnapshots(snapshot,read.result?.version===2?read.result.data:null)},CURRENT_KEY);
+   transaction.oncomplete=resolve;
+   transaction.onerror=()=>reject(transaction.error);
+   transaction.onabort=()=>reject(transaction.error);
+  });return true;
+ }catch{return false;}
+}
+export async function forgetProfile(){
+ try{
+  const db=await openDatabase();
+  await new Promise((resolve,reject)=>{
+   const transaction=db.transaction('profiles','readwrite'),store=transaction.objectStore('profiles');
+   store.delete('last');store.put({version:2,data:null},CURRENT_KEY);
+   transaction.oncomplete=resolve;transaction.onerror=()=>reject(transaction.error);
   });
- } catch {}
+ }catch{}
 }
