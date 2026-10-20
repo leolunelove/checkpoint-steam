@@ -83,3 +83,9 @@ Browser QA is documented in `QA.md`. Live Steam integration still requires your 
 - `.env.example` — server configuration template.
 
 Game names and artwork belong to their respective owners. Checkpoint is an independent prototype and is not affiliated with Valve or Steam.
+
+## Saved Steam data
+
+The published frontend saves the last connected public profile, full game library, stats and achievement details in IndexedDB on this browser. Returning visits restore that snapshot without any Steam API requests or automatic scans. The saved timestamp is shown. One initial scan is needed after this update because older versions did not retain achievement data. Partial scans are saved as they arrive.
+
+Refresh Steam is manual, with a persisted 15-minute cooldown. It fetches library metadata, reuses unchanged game details, and checks new games, changed playtime/last-played entries, failed/incomplete checks, or game data older than seven days. Saved stats remain visible during updates and on temporary Steam errors. Requests use two paced workers; no periodic refresh loop runs. Changes Steam makes without updating playtime/last-played metadata can take up to the seven-day recheck on a manual refresh to appear. Disconnect clears the cached profile; clearing browser data also removes it. Data is per browser/device, not synced to a database.
