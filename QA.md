@@ -43,3 +43,9 @@ Production verification completed: all 505 games saved, 2,387 of 28,740 achievem
 ## Availability checker — 20 October 2026
 
 29 scoped tests passed. Five availability tests cover game-scoped matches, conditional versus reported status, unlocked achievements excluded from remaining counts, missing progress and unknown/rare/error results. A local browser fixture confirmed report counts, source links, details navigation, achievement-level warnings and the availability filter. Its API counter stayed at the original four calls after checking the report and opening details. Catalog coverage is explicitly limited to Mad Max and Team Fortress 2; no universal availability verdict is claimed. No cache invalidation or Steam rescan is required for this update.
+
+Final real-profile verification matched the exact English Steam Replay names, including Local Cinema Star and Indie Film Sensation. A regression test covers all four names and separates two historical unlocks from remaining issues. All 30 scoped tests passed. Final source commit: 5db2cde83a906ac23001b50a6432a9b8f9312e53.
+
+## Current players
+
+36 scoped tests passed. Player tests cover the fixed, keyless Valve endpoint, real zero counts, response validation, invalid IDs, coalesced concurrent calls, 15-minute expiry, browser reuse, and the absence of profile/library calls on the players endpoint. JWT validation, CORS and the existing rate limit are retained.

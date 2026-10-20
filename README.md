@@ -93,3 +93,7 @@ Refresh Steam is manual, with a persisted 15-minute cooldown. It fetches library
 ## Achievement availability
 
 Check availability compares the cached library with a small sourced catalog. The first release covers two games: Mad Max’s conditional Scrap Crew blocker and Team Fortress 2’s reported YouTube Replay issue. Each entry includes its evidence, caveat and review date. Coverage is shown explicitly; other games are unreviewed, never certified obtainable. The check makes no Steam API requests, does not alter completion totals, and does not infer impossibility from rarity or errors. Existing unlocked achievements are distinguished from locked issues. Each game detail also links to SteamHunters for further manual research. This is a limited known-issues checker, not a comprehensive automatically maintained global database.
+
+## Current players
+
+Opening a real game detail requests the concurrent online player count from Valve’s GetNumberOfCurrentPlayers endpoint through the secure edge function. Counts are cached for 15 minutes in this browser; there is no polling or library-wide player scan. The edge function also uses a best-effort per-instance cache and request coalescing; separate edge instances or cold starts can fetch a newer count. The checked time is displayed. Unavailable counts are not converted to zero. The detail view links to the game’s SteamCharts page for historical trends. These are Steam player counts, not scraped SteamCharts data, and they exclude users disconnected from Steam.
