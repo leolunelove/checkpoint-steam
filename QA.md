@@ -29,3 +29,11 @@ This is a local Node project. GitHub Pages hosts the public frontend. The separa
 19 scoped Node tests pass, including CORS, missing or invalid server key handling, no secret disclosure, method/endpoint validation, and fixture library data through the edge handler. The deployed backend health and missing-key response have also been verified over HTTPS.
 
 Complete live library scan: 505 games checked; 374 games with achievements; 2,387 unlocked out of 28,740; 7 perfect games. No failed achievement checks remained in the tested import. Unlocked Super Meat Boy achievements displayed matching Steam dates.
+
+## Persistent cache update — 20 October 2026
+
+24 scoped tests passed, covering cache identity isolation, unchanged game reuse, changed/stale game updates, removed/new games and no-achievement results.
+
+Browser QA used a separate local fixture origin. Initial connect made exactly four API calls (config, library, two game details). Reload restored stats and full game details from IndexedDB; repeated Refresh clicks and opening saved details added zero API calls. The 15-minute cooldown message was verified.
+
+Production source commit: bd5aae17a9c14dfff8880546611a2103475a8b27. Cache is per browser/device. New installs require one initial scan. There is no automatic refresh or polling on cached visits.

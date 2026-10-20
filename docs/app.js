@@ -25,16 +25,17 @@ const icon = (name,cls='') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidd
 const storage = { get(key,fallback) { try {return JSON.parse(localStorage.getItem(key)) ?? fallback;}catch{return fallback;} }, set(key,value) {try{localStorage.setItem(key,JSON.stringify(value));}catch{ toast('Your browser could not save this preference.'); }} };
 let data = structuredClone(demo), tab = ['library','finish','insights'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'library';
 let filter='all',query='',sort='recent',configured=false,busy=false,epoch=0,selected=null,achFilter='remaining',achQuery='',revealed=new Set();
-let toastTimer, cacheTimer, cacheWarning=false;
+let toastTimer, cacheTimer, cacheWarning=false, cacheDirty=false;
 function persistProfile(){
  clearTimeout(cacheTimer);cacheTimer=null;
- if(data.mode!=='live')return Promise.resolve();
+ if(data.mode!=='live'||!cacheDirty)return Promise.resolve();
+ cacheDirty=false;
  return saveProfile(data).then(saved=>{if(!saved&&!cacheWarning){cacheWarning=true;toast('Browser storage is unavailable. This library cannot be saved for next time.');}});
 }
-function scheduleCache(){if(!cacheTimer)cacheTimer=setTimeout(()=>{cacheTimer=null;persistProfile();},2000);}
+function scheduleCache(){cacheDirty=true;if(!cacheTimer)cacheTimer=setTimeout(()=>{cacheTimer=null;persistProfile();},2000);}
 function savedTime(){return data.fetchedAt?new Date(data.fetchedAt).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'earlier';}
 function refreshWait(){const shared=storage.get(`checkpoint:refresh:${data.profile.id}`,0);return Math.max(0,Math.ceil((Math.max(data.refreshStartedAt||0,Number(shared)||0)+REFRESH_COOLDOWN-Date.now())/60000));}
-function markRefresh(){data.refreshStartedAt=Date.now();storage.set(`checkpoint:refresh:${data.profile.id}`,data.refreshStartedAt);}
+function markRefresh(){cacheDirty=true;data.refreshStartedAt=Date.now();storage.set(`checkpoint:refresh:${data.profile.id}`,data.refreshStartedAt);}
 const pinKey = () => `checkpoint:pins:${data.profile.id}`;
 const pins = () => { const p=storage.get(pinKey(),data.mode==='demo'?[1145360,504230,1332010]:[]);return Array.isArray(p)?p.filter(Number.isInteger):[]; };
 const isSaved = id => pins().includes(id);
@@ -137,7 +138,7 @@ document.addEventListener('click',async event=>{
  const retryGame=event.target.closest('[data-retry-game]');if(retryGame){if(busy||refreshWait()){toast('Please wait before retrying Steam.');return;}markRefresh();await persistProfile();const g=data.games.find(g=>g.id===Number(retryGame.dataset.retryGame));g.status='pending';renderDetail();await loadGame(g,epoch);return;}
  const action=event.target.closest('[data-action]')?.dataset.action;
  if(action==='connect'){try{configured=(await request('config',{})).configured;}catch{}showConnect();}
- if(action==='demo'){epoch++;busy=false;clearTimeout(renderTimer);clearTimeout(cacheTimer);cacheTimer=null;await forgetProfile();data=structuredClone(demo);storage.set('checkpoint:profile',null);$('#connect-dialog').close();$('#detail-dialog').close();selected=null;render();}
+ if(action==='demo'){epoch++;busy=false;clearTimeout(renderTimer);renderTimer=null;clearTimeout(cacheTimer);cacheTimer=null;await forgetProfile();data=structuredClone(demo);storage.set('checkpoint:profile',null);$('#connect-dialog').close();$('#detail-dialog').close();selected=null;render();}
  if(action==='reset'){filter='all';query='';render();}
  if(action==='library')location.hash='library';
  if(action==='refresh'&&!busy)await connect(data.profile.id,{refresh:true});
