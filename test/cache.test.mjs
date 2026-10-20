@@ -55,3 +55,11 @@ test('new achievement checks replace older progress and accounts stay separate',
  assert.equal(mergeSnapshots(incoming,{...previous,fetchedAt:100}).games[0].unlocked,2);
  const other={...previous,profile:{id:'76561198000000001'}};assert.equal(mergeSnapshots(other,previous),other);
 });
+
+test('completed legacy progress wins over a pending snapshot with an equal or missing check time',()=>{
+ for(const stamp of [undefined,100]){
+  const complete={...previous,fetchedAt:100,games:[{...oldGame,checkedAt:stamp}]};
+  const partial={...previous,fetchedAt:100,games:[{...current,checkedAt:stamp}]};
+  assert.equal(mergeSnapshots(partial,complete).games[0].status,'ready');
+ }
+});

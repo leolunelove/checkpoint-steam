@@ -43,7 +43,10 @@ export function mergeSnapshots(incoming,stored){
   aliases:[...new Set([...(incoming.aliases||[]),...(stored.aliases||[])])],
   games:base.games.map(game=>{
    const saved=alternate.get(game.id);
-   if(!saved||(saved.checkedAt||0)<=(game.checkedAt||0))return game;
+   if(!saved)return game;
+   const savedTime=saved.checkedAt||0,currentTime=game.checkedAt||0;
+   const savedReady=['ready','none'].includes(saved.status),currentReady=['ready','none'].includes(game.status);
+   if(savedTime<currentTime||(savedTime===currentTime&&(!savedReady||currentReady)))return game;
    return {...saved,id:game.id,name:game.name,minutes:game.minutes,lastPlayed:game.lastPlayed};
   })};
 }

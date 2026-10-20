@@ -2,7 +2,7 @@ import { cachedPlayers, loadPlayers, PLAYER_TTL } from './players.mjs';
 import { catalog, reviewedAt, rulesFor, achievementIssues, gameFindings, libraryAvailability } from './availability.mjs?v=2';
 import { backend } from './connection.js';
 import { demo } from './demo.js';
-import { REFRESH_COOLDOWN, matchesProfile, mergeLibrary, readProfile, saveProfile, forgetProfile } from './profile-cache.mjs?v=2';
+import { REFRESH_COOLDOWN, matchesProfile, mergeLibrary, readProfile, saveProfile, forgetProfile } from './profile-cache.mjs?v=3';
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const paths = {
