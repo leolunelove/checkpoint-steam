@@ -1,0 +1,2 @@
+// Public gateway credential, designed for browser use. This is NOT the Steam API key.
+export const backend = {"url":"https://erygwkyjqtmmuucwnrds.supabase.co/functions/v1/checkpoint-steam-api","anonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVyeWd3a3lqcXRtbXV1Y3ducmRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMzE0ODYsImV4cCI6MjEwNTcwNzQ4Nn0.EU99wZxnHzfaaHe6BraAscBPj_qWfj9QVPb0Tdu-PLs"};

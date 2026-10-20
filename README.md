@@ -1,8 +1,10 @@
 # Deployment status
 
-Public demo: https://steam.leolune.fun
+App: https://steam.leolune.fun
 
-GitHub Pages serves `docs/`, which is explicitly demo-only. The interface works with fictional sample data; live Steam syncing is not enabled on this static deployment. The secure Node server in the project root remains available for deployment to a server-capable host. Do not add a Steam API key to `docs/` or any browser file.
+GitHub Pages serves `docs/`. It connects to the separately deployed `checkpoint-steam-api` Supabase Edge Function for real profiles. The backend reads CHECKPOINT_STEAM_API_KEY only from encrypted server-side secrets. Until that secret is supplied, the labelled demo remains available and profile requests return an explicit setup error. Never put a Steam API key in `docs/`, chat, GitHub, or a browser build variable.
+
+Backend: shared-memo project, function `checkpoint-steam-api`, JWT verification enabled. The public browser gateway credential in `docs/connection.js` is a Supabase anon credential, not a Steam key or service-role key. The function never uses the database. Browser CORS is restricted to the app origin and local development origin; upstream Steam URLs are fixed and profile/app IDs are validated. Function rate/concurrency limits and cache are isolate-local, not a distributed quota guarantee.
 
 # Checkpoint
 
@@ -60,7 +62,7 @@ This project is a small Node server, so it needs a host that runs Node; a static
 
 For a personal hosted instance, set `STEAM_ALLOWED_ID` to your 17-digit SteamID64. This restricts profile lookup and reduces use of your key’s quota by other visitors. This minimal app does not include authentication, shared cloud storage, OpenID login, or a multi-user account system. Before a broad public launch, add authentication and infrastructure-level throttling; the included rate limiter is per process and sees the reverse proxy’s IP unless deployed directly.
 
-No hosting service or secret has been configured on your behalf.
+The hosted Edge Function is configured separately, as described at the top of this guide. The local Node edition continues to use its own .env configuration.
 
 ## Tests and validation
 

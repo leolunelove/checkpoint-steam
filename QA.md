@@ -21,4 +21,9 @@ Responsive browser viewports were checked; physical iPhone/iPad/Safari, assistiv
 
 The original mockup image was not exposed by the referenced chat. The delivered design follows the requested dark iOS-inspired direction, with its own desktop layout, rather than claiming a pixel match.
 
-This is a local Node project. No public deployment or production authentication has been configured. External game artwork and optional fonts require an internet connection.
+This is a local Node project. GitHub Pages hosts the public frontend. The separate Supabase Edge Function has JWT verification enabled and a validated browser CORS boundary. Real-profile verification is pending the server Steam API key and a public test profile. External game artwork and optional fonts require an internet connection.
+
+
+## Backend update
+
+19 scoped Node tests pass, including CORS, missing or invalid server key handling, no secret disclosure, method/endpoint validation, and fixture library data through the edge handler. The deployed backend health and missing-key response have also been verified over HTTPS.
