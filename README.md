@@ -2,7 +2,7 @@
 
 App: https://steam.leolune.fun
 
-GitHub Pages serves `docs/`. It connects to the separately deployed `checkpoint-steam-api` Supabase Edge Function for real profiles. The backend reads CHECKPOINT_STEAM_API_KEY only from encrypted server-side secrets. Until that secret is supplied, the labelled demo remains available and profile requests return an explicit setup error. Never put a Steam API key in `docs/`, chat, GitHub, or a browser build variable.
+GitHub Pages serves `docs/`. It connects to the separately deployed `checkpoint-steam-api` Supabase Edge Function for real profiles. The backend reads CHECKPOINT_STEAM_API_KEY only from encrypted server-side secrets. The secret is configured in encrypted backend storage. Live loading was verified with the user-provided leolune profile, including library data and achievement unlocks. The labelled demo remains an optional fallback, never a substitute for unavailable Steam data. Never put a Steam API key in `docs/`, chat, GitHub, or a browser build variable.
 
 Backend: shared-memo project, function `checkpoint-steam-api`, JWT verification enabled. The public browser gateway credential in `docs/connection.js` is a Supabase anon credential, not a Steam key or service-role key. The function never uses the database. Browser CORS is restricted to the app origin and local development origin; upstream Steam URLs are fixed and profile/app IDs are validated. Function rate/concurrency limits and cache are isolate-local, not a distributed quota guarantee.
 

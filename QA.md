@@ -15,15 +15,17 @@
 
 ## Boundaries
 
-No real Steam API key or user profile was supplied. The live Steam adapter is implemented against the official API contracts, but a real-account sync has not been verified. Fixture-based checks are not evidence of Steam availability or credential validity.
+A server-side Steam API key is configured. Live verification with the user-provided leolune profile returned @leo and 505 owned games. Super Meat Boy returned 3 unlocked achievements out of 48. The browser loaded the real profile and rendered the matching game detail.
 
 Responsive browser viewports were checked; physical iPhone/iPad/Safari, assistive technology, large real libraries, and production load were not tested. Reduced-motion styles, semantic controls, keyboard focus outlines, native modal focus handling, and spoiler protection are implemented. They do not constitute a complete accessibility audit.
 
 The original mockup image was not exposed by the referenced chat. The delivered design follows the requested dark iOS-inspired direction, with its own desktop layout, rather than claiming a pixel match.
 
-This is a local Node project. GitHub Pages hosts the public frontend. The separate Supabase Edge Function has JWT verification enabled and a validated browser CORS boundary. Real-profile verification is pending the server Steam API key and a public test profile. External game artwork and optional fonts require an internet connection.
+This is a local Node project. GitHub Pages hosts the public frontend. The separate Supabase Edge Function has JWT verification enabled and a validated browser CORS boundary. Real-profile verification passed against the deployed backend. Production frontend assets were verified to match the source. External game artwork and optional fonts require an internet connection.
 
 
 ## Backend update
 
 19 scoped Node tests pass, including CORS, missing or invalid server key handling, no secret disclosure, method/endpoint validation, and fixture library data through the edge handler. The deployed backend health and missing-key response have also been verified over HTTPS.
+
+Complete live library scan: 505 games checked; 374 games with achievements; 2,387 unlocked out of 28,740; 7 perfect games. No failed achievement checks remained in the tested import. Unlocked Super Meat Boy achievements displayed matching Steam dates.
