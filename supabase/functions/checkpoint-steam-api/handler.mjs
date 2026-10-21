@@ -1,3 +1,4 @@
+import {createCompletionTimes} from './completion-times.mjs';
 import { createAvailability } from './availability.mjs';
 import { createPlayerCounts } from './players.mjs';
 import { createSteam, AppError } from './steam.mjs';
@@ -6,6 +7,7 @@ export function createHandler({ getKey, fetcher = fetch, now = Date.now } = {}) 
   const limits = new Map();
   const players = createPlayerCounts({fetcher,now});
   const availability = createAvailability({fetcher,now});
+  const times = createCompletionTimes({fetcher,now});
   let active = 0;
   const origins = new Set(['https://steam.leolune.fun','http://127.0.0.1:8787']);
   return async request => {
@@ -26,7 +28,7 @@ export function createHandler({ getKey, fetcher = fetch, now = Date.now } = {}) 
     if (request.method !== 'GET') return json(405,{error:'Method not allowed.'});
     const url = new URL(request.url);
     const endpoint = url.searchParams.get('endpoint') || 'config';
-    if (!['config','library','achievements','players','availability'].includes(endpoint)) return json(404,{error:'Endpoint not found.'});
+    if (!['config','library','achievements','players','availability','times'].includes(endpoint)) return json(404,{error:'Endpoint not found.'});
     const key = getKey() || '';
     if (endpoint === 'config') return json(200,{configured:Boolean(key),restricted:false,service:'checkpoint-steam-api'});
     if (!key) return json(503,{error:'Steam connection is awaiting its server API key. The owner needs to add CHECKPOINT_STEAM_API_KEY to the backend’s secrets. Demo data has not been substituted.'});
@@ -41,11 +43,11 @@ export function createHandler({ getKey, fetcher = fetch, now = Date.now } = {}) 
     }
     if (++limit.count > 240 || active >= 6) return json(429,{error:'A little breather. Please retry in a minute.'});
     const profile = url.searchParams.get('profile');
-    if (!['players','availability'].includes(endpoint) && (!profile || profile.length > 180)) return json(400,{error:'Enter a Steam profile URL, custom name, or SteamID64.'});
+    if (!['players','availability','times'].includes(endpoint) && (!profile || profile.length > 180)) return json(400,{error:'Enter a Steam profile URL, custom name, or SteamID64.'});
     if (!adapter || currentKey !== key) {adapter=createSteam({key,fetcher,now});currentKey=key;}
     active++;
     try {
-      const data = endpoint === 'availability' ? await availability(url.searchParams.get('appid')) : endpoint === 'players' ? await players(url.searchParams.get('appid')) : endpoint === 'library' ? await adapter.library(profile) : await adapter.achievements(profile,url.searchParams.get('appid'));
+      const data = endpoint === 'times' ? await times(url.searchParams.get('appids')) : endpoint === 'availability' ? await availability(url.searchParams.get('appid')) : endpoint === 'players' ? await players(url.searchParams.get('appid')) : endpoint === 'library' ? await adapter.library(profile) : await adapter.achievements(profile,url.searchParams.get('appid'));
       return json(200,data);
     } catch(error) {
       return json(error instanceof AppError ? error.status : 500,{error:error instanceof AppError ? error.message : 'Something went wrong. Please try again.'});

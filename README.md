@@ -121,3 +121,11 @@ Finish next cards show achievements left. Its local sort preference switches bet
 Remaining-achievement rarity uses cached Steam global percentages, excluding already unlocked achievements. Cards show the average and rarest outstanding rate and partial-data coverage. Most common remaining sorting uses the rarest outstanding rate first, with incomplete data last. Unlock rates are a heuristic, not a difficulty or time estimate.
 
 Easiest to finish is a relative heuristic: sum `100 / max(global unlock percentage, 0.1)` across locked achievements, lower first. It combines count and inverse prevalence, penalizes rare bottlenecks and keeps genuine zero percentages finite. Fully known rate data ranks before partial/unknown data. Ties use remaining count, exact completion, then app ID. This is not expected attempts, playtime, or a guarantee of difficulty. Eligibility rules are unchanged.
+
+### Community 100% completion-time references
+
+SteamHunters' `medianCompletionTime` (minutes) is a full-completion reference, not a personal remaining-time forecast. Original completion playtime can depend on profile synchronization, idling and content; subtracting current playtime or multiplying by achievement percentage would invent precision, so the app does neither. See the source creator's explanation: https://www.patreon.com/steamhunters/posts/completion-time-45979569.
+
+Cards and game details show approximate full-completion time and source attribution. Shortest 100% time sorts positive medians ascending, with missing/mismatched data and games with fewer than five recorded completions last. Low-data values are labelled. Zero or missing medians never mean zero hours.
+
+`completion-times-data.mjs` holds public, app-only metadata (505 source lookups; 351 positive medians at publication), without profile/ownership/unlock information. Browser references last seven days. Manual Update time references uses a fixed-host Edge Function `times` endpoint with validated batches of at most 50 app IDs, no Steam key/profile upstream, paced browser requests, and warm-instance caching. Opening/sorting makes no API requests. New profiles with uncatalogued games see explicit unavailable references until manually updated. Warm Edge caches are not durable/shared storage.

@@ -1,10 +1,11 @@
+import {timeReference} from './completion-times.mjs?v=1';
 import { gameFindings, sourceCoverage } from './availability.mjs?v=3';
 
 // Recommendations need matching source coverage. A historical unlock is never a blocker.
 export function finishCandidates(games,{demo=false,sort='completion'}={}) {
  return games.filter(game=>game.status==='ready'&&game.unlocked>0&&game.total>game.unlocked&&(demo||(
   sourceCoverage([game]).checked===1&&!gameFindings(game).some(({achievement,rule})=>!achievement.unlocked&&['unobtainable','reported','conditional','broken'].includes(rule.kind))
- ))).sort((a,b)=>{const completion=(b.unlocked/b.total)-(a.unlocked/a.total),remaining=(a.total-a.unlocked)-(b.total-b.unlocked);if(sort==='easiest'){const ae=finishEffort(a),be=finishEffort(b);return Number(ae===null)-Number(be===null)||(ae!==null&&be!==null?ae-be:0)||remaining||completion||a.id-b.id;}if(sort==='rarity'){const ar=remainingRarity(a),br=remainingRarity(b);return Number(br.complete)-Number(ar.complete)||(ar.complete&&br.complete?(br.rarest-ar.rarest)||(br.average-ar.average):0)||remaining||completion||a.id-b.id;}return (sort==='remaining'?remaining||completion:completion||remaining)||a.id-b.id;});
+ ))).sort((a,b)=>{const completion=(b.unlocked/b.total)-(a.unlocked/a.total),remaining=(a.total-a.unlocked)-(b.total-b.unlocked);if(sort==='time'){const at=timeReference(a),bt=timeReference(b),am=at?.reliable?at.medianMinutes:null,bm=bt?.reliable?bt.medianMinutes:null;return Number(am===null)-Number(bm===null)||(am!==null&&bm!==null?am-bm:0)||remaining||completion||a.id-b.id;}if(sort==='easiest'){const ae=finishEffort(a),be=finishEffort(b);return Number(ae===null)-Number(be===null)||(ae!==null&&be!==null?ae-be:0)||remaining||completion||a.id-b.id;}if(sort==='rarity'){const ar=remainingRarity(a),br=remainingRarity(b);return Number(br.complete)-Number(ar.complete)||(ar.complete&&br.complete?(br.rarest-ar.rarest)||(br.average-ar.average):0)||remaining||completion||a.id-b.id;}return (sort==='remaining'?remaining||completion:completion||remaining)||a.id-b.id;});
 }
 
 export function remainingRarity(game) {
