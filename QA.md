@@ -90,3 +90,7 @@ Every readable Finish next card (including manual pins) now shows its remaining 
 ## Remaining rarity summaries · 20 October
 
 Library and Finish next cards now summarize Steam global unlock rates for locked achievements only: average, rarest, and explicit partial/unavailable coverage. Genuine zero rates remain zero, while null/nonfinite/out-of-range values stay unknown. Finish next adds a saved Most common remaining sort, ranking fully covered games by their rarest outstanding achievement descending, then average; partial/unknown rate data goes last. This is explicitly an unlock-rate comparison, not a difficulty guarantee. All normal-play filters remain. 57 tests pass. No Steam requests or rescans added.
+
+## Combined easiest sort · 21 October
+
+Added a persisted Easiest to finish option combining all remaining counts and inverse global unlock percentages. Rare outstanding achievements add more weight; a genuine zero rate is finite and strongly penalized. Incomplete rates go last. Existing normal-play eligibility, other sorts and manual pins remain unchanged. 60 tests pass, including count-versus-rarity tradeoffs, historical unlock exclusion, and zero/missing data. No Steam requests added.

@@ -119,3 +119,5 @@ Finish next shows the full eligible in-progress library in a responsive grid, so
 Finish next cards show achievements left. Its local sort preference switches between closest completion and fewest remaining (ties use completion percentage), without refreshing Steam.
 
 Remaining-achievement rarity uses cached Steam global percentages, excluding already unlocked achievements. Cards show the average and rarest outstanding rate and partial-data coverage. Most common remaining sorting uses the rarest outstanding rate first, with incomplete data last. Unlock rates are a heuristic, not a difficulty or time estimate.
+
+Easiest to finish is a relative heuristic: sum `100 / max(global unlock percentage, 0.1)` across locked achievements, lower first. It combines count and inverse prevalence, penalizes rare bottlenecks and keeps genuine zero percentages finite. Fully known rate data ranks before partial/unknown data. Ties use remaining count, exact completion, then app ID. This is not expected attempts, playtime, or a guarantee of difficulty. Eligibility rules are unchanged.

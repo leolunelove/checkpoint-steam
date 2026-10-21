@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {remainingRarity,finishCandidates} from '../docs/finish-next.mjs?v=5';
+import {remainingRarity,finishCandidates} from '../docs/finish-next.mjs?v=6';
 const game=(id,rates)=>({id,status:'ready',total:rates.length+1,unlocked:1,percent:50,achievements:[{unlocked:true,rarity:99},...rates.map(rarity=>({unlocked:false,rarity}))]});
 test('rarity summarizes only locked achievements and preserves a genuine zero',()=>{
  assert.deepEqual(remainingRarity(game(1,[0,10,20])),{total:3,known:3,complete:true,average:10,rarest:0});
