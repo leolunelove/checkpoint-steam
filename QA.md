@@ -98,3 +98,7 @@ Added a persisted Easiest to finish option combining all remaining counts and in
 ## Community time references · 21 October
 
 Added SteamHunters full-completion medians, explicit unavailable/limited data, source links and Shortest 100% time sorting. These are not remaining hours; no subtraction from personal playtime or achievement-percentage time inference. Cached seven days, manual paced batched updates only, existing normal-play filters unchanged. 64 tests pass, including minutes formatting, missing/zero values, source-count mismatch, limited completion data, batch validation/coalescing/caching, and no upstream Steam profile/key. Edge Function v5 verified live with 200 for Portal 2 and Spider-Man metadata. 320px/390px fixture layouts have no horizontal overflow; sort control fits at 181.5px. Physical iPhone/Safari remains unverified.
+
+## Time-weighted easiest ranking · 21 October
+
+Easiest to finish includes a square-root full-completion-time factor alongside its existing count/inverse-rarity effort. Unknown/limited/mismatched time or incomplete rarity gets no fabricated combined score and sorts after complete estimates. Existing normal-play eligibility and all other sorts remain unchanged. All 67 tests pass, including equal-work shorter-time ordering, count/rarity influence, personal-playtime independence and missing/low-data cases. No network, refresh or cache behavior added.
