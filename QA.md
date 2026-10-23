@@ -110,3 +110,6 @@ Finish next now defaults to Easiest to finish when no valid preference exists; e
 
 ### Not now (23 October 2026)
 Finish next cards include Not now. Hidden games stay in the library and keep their progress and pins. Open Not now (N) to restore individually or all together. Choices persist per Steam profile in this browser only. No Steam scan is needed. All five recommendation sorts respect hidden games. 72 automated tests pass; browser hide/reload/restore and mobile layouts checked.
+
+
+SteamAchieve rebrand and Undo: updated wordmark, mobile SA mark, favicon and page titles. Not now offers an 8-second Undo toast, paused while hovered or keyboard focused. Undo restores only the last hidden game for the same active profile; existing pins, hidden list, progress and cache keys are preserved. Desktop/mobile hide -> Undo -> reload verified; 72 tests pass.

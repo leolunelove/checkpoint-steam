@@ -6,7 +6,7 @@ GitHub Pages serves `docs/`. It connects to the separately deployed `checkpoint-
 
 Backend: shared-memo project, function `checkpoint-steam-api`, JWT verification enabled. The public browser gateway credential in `docs/connection.js` is a Supabase anon credential, not a Steam key or service-role key. The function never uses the database. Browser CORS is restricted to the app origin and local development origin; upstream Steam URLs are fixed and profile/app IDs are validated. Function rate/concurrency limits and cache are isolate-local, not a distributed quota guarantee.
 
-# Checkpoint
+# SteamAchieve
 
 A focused Steam achievement companion with a dark, iOS-inspired interface and a desktop layout of its own. Search your games, see your overall progress, inspect achievements, and save a small **Finish next** list.
 
@@ -137,3 +137,6 @@ Finish next defaults to Easiest to finish when no valid local preference exists.
 
 ### Not now (23 October 2026)
 Finish next cards include Not now. Hidden games stay in the library and keep their progress and pins. Open Not now (N) to restore individually or all together. Choices persist per Steam profile in this browser only. No Steam scan is needed. All five recommendation sorts respect hidden games. 72 automated tests pass; browser hide/reload/restore and mobile layouts checked.
+
+
+SteamAchieve rebrand and Undo: updated wordmark, mobile SA mark, favicon and page titles. Not now offers an 8-second Undo toast, paused while hovered or keyboard focused. Undo restores only the last hidden game for the same active profile; existing pins, hidden list, progress and cache keys are preserved. Desktop/mobile hide -> Undo -> reload verified; 72 tests pass.

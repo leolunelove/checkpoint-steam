@@ -55,7 +55,8 @@ function storeNotNow(ids){try{if(writeNotNow(localStorage,data.profile.id,ids))r
 function setNotNow(id,hide){
  if(!data.games.some(g=>g.id===id)||!storeNotNow(changeNotNow(notNowIds(),id,hide)))return;
  render();if($('#hidden-dialog').open)showNotNow();if($('#detail-dialog').open&&selected===id)renderDetail();
- toast(hide?'Hidden from Finish next.':'Restored to Finish next.');
+ const profileId=data.profile.id;
+ toast(hide?'Hidden from Finish next.':'Restored to Finish next.',hide?()=>{if(data.profile.id===profileId)setNotNow(id,false);}:null);
 }
 function showNotNow(){
  const ids=notNowIds(),games=data.games.filter(g=>ids.includes(g.id)).sort((a,b)=>a.name.localeCompare(b.name));
@@ -68,7 +69,16 @@ const image = (id,hero=false) => `https://shared.fastly.steamstatic.com/store_it
 const safeImage = value => {try {const u=new URL(value);return u.protocol==='https:'?esc(u.href):'';}catch{return '';} };
 const hours = minutes => `${new Intl.NumberFormat('en',{maximumFractionDigits:1}).format(minutes/60)}h`;
 const ring = percent => `<svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="16" pathLength="100"/><circle class="value" cx="20" cy="20" r="16" pathLength="100" stroke-dashoffset="${100-percent}"/></svg>`;
-function toast(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2600);}
+function toast(message,undo=null){
+ const el=$('#toast');clearTimeout(toastTimer);el.replaceChildren();el.inert=false;
+ const text=document.createElement('span');text.textContent=message;el.append(text);
+ const dismiss=()=>{el.classList.remove('visible');el.inert=true;};
+ const schedule=()=>{clearTimeout(toastTimer);toastTimer=setTimeout(dismiss,undo?8000:2600);};
+ if(undo){const button=document.createElement('button');button.type='button';button.className='toast-undo';button.textContent='Undo';button.onclick=()=>{clearTimeout(toastTimer);dismiss();undo();};el.append(button);}
+ el.onpointerenter=el.onfocusin=()=>clearTimeout(toastTimer);
+ el.onpointerleave=()=>{if(!el.contains(document.activeElement))schedule();};
+ el.onfocusout=()=>schedule();el.classList.add('visible');schedule();
+}
 function derived(){const ready=data.games.filter(g=>g.status==='ready');const total=ready.reduce((n,g)=>n+g.total,0);const unlocked=ready.reduce((n,g)=>n+g.unlocked,0);return {ready,total,unlocked,percent:total?Math.round(unlocked/total*100):0,complete:ready.filter(g=>g.total>0&&g.unlocked===g.total).length,checked:data.games.filter(g=>g.status!=='pending'&&!g.needsRefresh).length,pending:data.games.filter(g=>g.status==='pending'||g.needsRefresh).length,failed:data.games.filter(g=>g.status==='error'||g.refreshError).length};}
 function updateShell(){
  const labels={library:'Library',finish:'Finish next',insights:'Your stats'};
@@ -78,7 +88,7 @@ function updateShell(){
  $('#source-badge').innerHTML=`<i></i> ${data.mode==='demo'?'Demo profile':'Steam profile'}`;
  $('#connect-label').textContent=data.mode==='demo'?'Connect Steam':'Manage profile';
  $('#avatar').innerHTML=data.profile.avatar?`<img src="${safeImage(data.profile.avatar)}" alt="">`:'p1';
- document.title=`${labels[tab]} · Checkpoint`;
+ document.title=`${labels[tab]} · SteamAchieve`;
 }
 function stats(){const s=derived();return `<div class="stats" aria-label="${data.mode==='demo'?'Sample ':''}Library statistics"><div class="stat"><div class="stat-label">${icon('trophy')} Achievements</div><div class="stat-value">${s.unlocked.toLocaleString()}<em>of ${s.total.toLocaleString()}</em></div></div><div class="stat"><div class="stat-label">${icon('circle')} Perfect games</div><div class="stat-value">${s.complete}<em>at 100%</em></div></div><div class="stat"><div class="stat-label">${icon('chart')} Completion</div><div class="stat-value">${s.percent}<span style="font-size:.65em">%</span><em>overall</em></div></div><div class="stat"><div class="stat-label">${icon('library')} In your library</div><div class="stat-value">${data.games.length.toLocaleString()}<em>games</em></div></div></div>`;}
 function syncNote(){const s=derived();if(data.mode==='demo')return '';return `<div class="loading-notice">${busy&&s.pending?'<span class="loading-dot"></span>':''}${busy&&s.pending?`Updating ${s.pending} games · saved progress stays visible.`:`Saved on this device · ${savedTime()}. No automatic refresh.`}${!busy&&s.pending?` ${s.pending} games still to check. Refresh Steam to continue.`:''}${s.failed?` ${s.failed} unavailable.<button class="retry-button" data-action="retry">Retry</button>`:''}</div>`;}
