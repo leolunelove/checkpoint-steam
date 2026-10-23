@@ -140,3 +140,5 @@ Finish next cards include Not now. Hidden games stay in the library and keep the
 
 
 SteamAchieve rebrand and Undo: updated wordmark, mobile SA mark, favicon and page titles. Not now offers an 8-second Undo toast, paused while hovered or keyboard focused. Undo restores only the last hidden game for the same active profile; existing pins, hidden list, progress and cache keys are preserved. Desktop/mobile hide -> Undo -> reload verified; 72 tests pass.
+
+SteamAchieve trophy/check icon: SVG mark and logo, opaque 180/192/512/1024 PNGs, Apple touch icon and web manifest. Desktop and 320/390px layouts checked; physical Home Screen installation not tested.
