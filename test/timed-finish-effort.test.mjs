@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {finishCandidates,timedFinishEffort} from '../docs/finish-next.mjs?v=9';
+import {finishCandidates,timedFinishEffort} from '../docs/finish-next.mjs?v=10';
 import {loadTimes} from '../docs/completion-times.mjs?v=1';
 const game=(id,rates)=>({id,status:'ready',total:rates.length+1,unlocked:1,minutes:99999,achievements:[{unlocked:true,rarity:0},...rates.map(rarity=>({unlocked:false,rarity}))]});
 const seed=async(game,minutes,completions=50,count=game.total)=>loadTimes([game.id],async()=>[{appId:game.id,achievementCount:count,medianMinutes:minutes,completions,fetchedAt:Date.now()}]);

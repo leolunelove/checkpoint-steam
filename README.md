@@ -133,3 +133,7 @@ Cards and game details show approximate full-completion time and source attribut
 Easiest to finish now multiplies its count/rarity effort sum by `sqrt(community median minutes / 60)`. The square root gives shorter full-completion times a moderate influence without replacing rare-achievement penalties. A combined score requires complete remaining rarity data plus matching time metadata with at least five recorded completions. Uncertain games sort after fully scored games, falling back to count/rarity ordering within that group. No personal remaining hours are inferred.
 
 Finish next defaults to Easiest to finish when no valid local preference exists. Explicit user choices remain saved. Recommendation/source details are in About recommendations. Interface uses system fonts with no remote font dependency; narrow Finish next layouts use grouped rows.
+
+
+### Not now (23 October 2026)
+Finish next cards include Not now. Hidden games stay in the library and keep their progress and pins. Open Not now (N) to restore individually or all together. Choices persist per Steam profile in this browser only. No Steam scan is needed. All five recommendation sorts respect hidden games. 72 automated tests pass; browser hide/reload/restore and mobile layouts checked.

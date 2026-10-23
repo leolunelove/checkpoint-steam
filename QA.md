@@ -106,3 +106,7 @@ Easiest to finish includes a square-root full-completion-time factor alongside i
 ## Shipping cleanup · 23 October
 
 Finish next now defaults to Easiest to finish when no valid preference exists; explicit saved choices remain respected. The first-use fixture visibly selected Easiest without setting it. Removed slogan eyebrows, motivational sidebar/footer copy, empty shortlist count, sparkle decoration and the remote font import. Simplified Library/Stats/connection headings. Finish next has concise app chrome and a disclosure for scoring, source caveats and availability actions, preserving the open disclosure across sort/pin rerenders. Desktop cards retain progress/remaining/rarity/full-time data; narrow screens use grouped horizontal rows. At 320/390px the page has no horizontal overflow, controls fit, and games appear much earlier. Physical iPhone/Safari remains unverified. All 69 tests pass; no backend, profile cache or refresh changes.
+
+
+### Not now (23 October 2026)
+Finish next cards include Not now. Hidden games stay in the library and keep their progress and pins. Open Not now (N) to restore individually or all together. Choices persist per Steam profile in this browser only. No Steam scan is needed. All five recommendation sorts respect hidden games. 72 automated tests pass; browser hide/reload/restore and mobile layouts checked.
