@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createCompletionTimes,TIME_TTL} from '../supabase/functions/checkpoint-steam-api/completion-times.mjs';
 import {createHandler} from '../supabase/functions/checkpoint-steam-api/handler.mjs';
 import {formatCompletionTime,loadTimes,timeReference} from '../docs/completion-times.mjs?v=1';
-import {finishCandidates} from '../docs/finish-next.mjs?v=8';
+import {finishCandidates} from '../docs/finish-next.mjs?v=9';
 test('bounded fixed-host source batches normalize minutes and cache/coalesce without profile or Steam key',async()=>{
  let calls=0,time=100;const load=createCompletionTimes({now:()=>time,fetcher:async url=>{calls++;assert.equal(url.origin,'https://steamhunters.com');assert.equal(url.pathname,'/api/apps');assert.deepEqual(url.searchParams.getAll('appIds'),['123','124']);assert.equal(url.searchParams.has('key'),false);return Response.json([{appId:123,achievementCount:2,medianCompletionTime:120,playersCompletedCount:50}]);}});
  const [a,b]=await Promise.all([load('123,124'),load('123,124')]);assert.deepEqual(a,b);assert.equal(calls,1);assert.equal(a[0].medianMinutes,120);assert.equal(a[1].medianMinutes,null);await load('123');assert.equal(calls,1);time+=TIME_TTL+1;

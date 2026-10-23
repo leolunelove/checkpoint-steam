@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {finishEffort,finishCandidates} from '../docs/finish-next.mjs?v=8';
+import {finishEffort,finishCandidates} from '../docs/finish-next.mjs?v=9';
 const game=(id,rates)=>({id,status:'ready',total:rates.length+1,unlocked:1,achievements:[{unlocked:true,rarity:0},...rates.map(rarity=>({unlocked:false,rarity}))]});
 test('easiest combines count and prevalence rather than ranking either in isolation',()=>{
  const games=[game(1,[1]),game(2,Array(10).fill(50)),game(3,[50])];

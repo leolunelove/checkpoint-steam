@@ -30,3 +30,7 @@ export function timedFinishEffort(game) {
  const effort=finishEffort(game),time=timeReference(game);
  return effort!==null&&time?.reliable?effort*Math.sqrt(time.medianMinutes/60):null;
 }
+
+export function resolveFinishSort(saved) {
+ return ['completion','remaining','rarity','easiest','time'].includes(saved)?saved:'easiest';
+}
