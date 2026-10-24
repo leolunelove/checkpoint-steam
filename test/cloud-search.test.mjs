@@ -38,3 +38,9 @@ test('service filtering preserves finish ranking, exclusions and game progress',
  assert.equal(JSON.stringify(games),before);
  assert.equal(cloudMatches(games[0],['gfn'],null).length,0);
 });
+
+test('saved cloud service choices restore safely and invalid preferences use All games',async()=>{
+ const {resolveCloudService}=await import('../docs/cloud-search.mjs');
+ for(const value of ['all','boosteroid','gfn'])assert.equal(resolveCloudService(value),value);
+ for(const value of [null,undefined,'Boosteroid','removed-provider',{},1])assert.equal(resolveCloudService(value),'all');
+});

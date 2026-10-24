@@ -17,3 +17,5 @@ export function cloudMatches(game,providers,catalog){
  return found;
 }
 export function matchesCloudSearch(game,query,catalog){const parsed=parseCloudQuery(query);return game.name.toLowerCase().includes(parsed.text.toLowerCase())&&(!parsed.providers.length||cloudMatches(game,parsed.providers,catalog).length>0);}
+
+export const resolveCloudService=value=>['boosteroid','gfn'].includes(value)?value:'all';
