@@ -25,3 +25,16 @@ test('combined title and service filtering works, multiple services use OR, miss
  assert.equal(matchesCloudSearch(game,'gfn boosteroid',index),true);assert.equal(matchesCloudSearch(game,'gfn',null),false);
  assert.equal(matchesCloudSearch(game,'portal',null),true);
 });
+
+test('service filtering preserves finish ranking, exclusions and game progress',async()=>{
+ const {finishCandidates}=await import('../docs/finish-next.mjs?v=10');
+ const games=[{id:620,name:'Portal 2',status:'ready',total:5,unlocked:4,percent:80,achievements:[]},{id:12,name:'Other game',status:'ready',total:10,unlocked:7,percent:70,achievements:[]},{id:99,name:'Maintenance game',status:'ready',total:5,unlocked:4,percent:80,achievements:[]}];
+ const before=JSON.stringify(games);
+ for(const sort of ['easiest','completion','remaining','rarity','time']){
+  const candidates=finishCandidates(games,{demo:true,sort,excluded:[12]});
+  assert.deepEqual(candidates.filter(g=>cloudMatches(g,['boosteroid'],index).length).map(g=>g.id),[620]);
+  assert.deepEqual(candidates.filter(g=>cloudMatches(g,['gfn'],index).length).map(g=>g.id),[620]);
+ }
+ assert.equal(JSON.stringify(games),before);
+ assert.equal(cloudMatches(games[0],['gfn'],null).length,0);
+});
