@@ -16,6 +16,6 @@ export function cloudMatches(game,providers,catalog){
  if(providers.includes('gfn')){const rows=catalog.gfn.get(cloudTitle(game.name));if(rows?.length===1){const row=rows[0];found.push({id:'gfn',name:'GeForce NOW',detail:row.playType==='INSTALL_TO_PLAY'?'Install to play':row.playType==='READY_TO_PLAY'?'Ready to play':'Listed',tier:row.tier});}}
  return found;
 }
-export function matchesCloudSearch(game,query,catalog){const parsed=parseCloudQuery(query);return game.name.toLowerCase().includes(parsed.text.toLowerCase())&&(!parsed.providers.length||cloudMatches(game,parsed.providers,catalog).length>0);}
+export function matchesCloudSearch(game,query,catalog,service='all'){const parsed=parseCloudQuery(query);if(!parsed.providers.length&&resolveCloudService(service)!=='all')parsed.providers=[service];return game.name.toLowerCase().includes(parsed.text.toLowerCase())&&(!parsed.providers.length||cloudMatches(game,parsed.providers,catalog).length>0);}
 
 export const resolveCloudService=value=>['boosteroid','gfn'].includes(value)?value:'all';

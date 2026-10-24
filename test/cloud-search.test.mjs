@@ -44,3 +44,13 @@ test('saved cloud service choices restore safely and invalid preferences use All
  for(const value of ['all','boosteroid','gfn'])assert.equal(resolveCloudService(value),value);
  for(const value of [null,undefined,'Boosteroid','removed-provider',{},1])assert.equal(resolveCloudService(value),'all');
 });
+
+test('Library title search respects the shared service choice; explicit service search remains a shortcut',()=>{
+ const portal={id:620,name:'Portal 2'},other={id:500,name:'Unlisted game'};
+ assert.equal(matchesCloudSearch(portal,'portal',index,'boosteroid'),true);
+ assert.equal(matchesCloudSearch(other,'',index,'boosteroid'),false);
+ assert.equal(matchesCloudSearch(portal,'other',index,'gfn'),false);
+ assert.equal(matchesCloudSearch(other,'',index,'all'),true);
+ assert.equal(matchesCloudSearch(portal,'Boosteroid portal',index,'gfn'),true);
+ assert.equal(matchesCloudSearch(portal,'',null,'gfn'),false);
+});
