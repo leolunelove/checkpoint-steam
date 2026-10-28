@@ -191,10 +191,11 @@ function cloudSearchNote(search=query){
  return `Steam editions on ${esc(parsed.names.join(' or '))} · checked ${date}. ${parsed.providers.includes('gfn')?'GeForce NOW uses exact title matches from its US catalogue; tier and region may vary. ':''}Some games require installation. <a href="${parsed.providers.includes('boosteroid')?'https://boosteroid.com/games/':'https://www.nvidia.com/en-us/geforce-now/games/'}" target="_blank" rel="noreferrer">Check service catalogue ↗</a>`;
 }
 function cloudCardLabels(g){
- if(!['library','finish'].includes(tab)||!cloudCatalog)return '';
- const matches=cloudMatches(g,['boosteroid','gfn'],cloudCatalog);if(!matches.length)return '';
- const date=new Date(cloudCatalog.checkedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
- return `<div class="cloud-badges" aria-label="Cloud gaming services">${matches.map(row=>`<span class="cloud-badge" title="${esc(`${row.name} · Steam edition · ${row.detail}${row.tier?' · '+row.tier:''}${row.id==='gfn'?' · US catalogue':''} · checked ${date}`)}">${esc(row.name)}${row.detail==='Install to play'?'<small>Install</small>':''}</span>`).join('')}</div>`;
+ if(!['library','finish'].includes(tab))return '';
+ const mapBadge=resourcesFor(g.id).some(r=>r.kind==='Map')?'<span class="cloud-badge map-badge" title="Interactive map available in game details" aria-label="Interactive map available"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2V5Z"/><path d="M9 3v16M15 5v16"/></svg>Map</span>':'';
+ const matches=cloudCatalog?cloudMatches(g,['boosteroid','gfn'],cloudCatalog):[];if(!matches.length&&!mapBadge)return '';
+ const date=new Date(cloudCatalog?.checkedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+ return `<div class="cloud-badges" aria-label="Game features">${mapBadge}${matches.map(row=>`<span class="cloud-badge" title="${esc(`${row.name} · Steam edition · ${row.detail}${row.tier?' · '+row.tier:''}${row.id==='gfn'?' · US catalogue':''} · checked ${date}`)}">${esc(row.name)}${row.detail==='Install to play'?'<small>Install</small>':''}</span>`).join('')}</div>`;
 }
 function updateGames(){ $('#cloud-search-note').innerHTML=cloudSearchNote(); $('#games-container').innerHTML=renderGames();$('#result-count').textContent=`${filtered().length} ${filtered().length===1?'game':'games'}`; }
 function togglePin(id){if(isNotNow(id)){if(!storeNotNow(changeNotNow(notNowIds(),id,false)))return;const saved=pins();if(!saved.includes(id))storage.set(pinKey(),[...saved,id]);render();if(selected===id&&$('#detail-dialog').open)renderDetail();toast('Restored and saved to Finish next.');return;}const list=pins();const had=list.includes(id);storage.set(pinKey(),had?list.filter(x=>x!==id):[...list,id]);render();if(selected===id&&$('#detail-dialog').open)renderDetail();toast(had?'Removed from Finish next':'Saved to Finish next');}
