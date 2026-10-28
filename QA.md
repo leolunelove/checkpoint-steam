@@ -134,3 +134,5 @@ Cloud search: type Boosteroid, GeForce NOW, GFN or NVIDIA in Library search; com
 Live Fallout 3/New Vegas/Fallout 4/Fallout 76 and Subnautica links verified. At 320px, companion labels now stay on one line and resource rows have no horizontal overflow.
 
 28 October: Small neutral Map badge with folded-map icon on Library and Finish next cards when exact app ID has a curated Map resource. Shares wrapping badge row with cloud services and works before cloud catalogue loads. Guide/companion-only games do not get a map badge. No new requests or Steam scan.
+
+28 October: Minimal Has map toggle in Library and Finish next, shared and remembered in this browser. Exact curated Map resources only; composes with search, progress, cloud service and existing Finish next exclusions/ranking. Saved and Recommended both filtered, pins and library remain intact. Library Continue playing follows the map filter. Reset filters clears it; empty Finish next map results offer Show games without maps. No Steam requests.
