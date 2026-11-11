@@ -42,3 +42,8 @@ test('HTTP serves only public assets and safe API responses',async()=>{
   assert.equal((await fetch(base+'/api/library',{method:'POST'})).status,405);
  } finally {await new Promise(resolve=>server.close(resolve));}
 });
+test('Steam hidden flags normalize numeric and string zero without hiding public achievements',async()=>{
+ const flags=[0,'0',false,1,'1',true];const f=fixture({GetSchemaForGame:{game:{availableGameStats:{achievements:flags.map((hidden,i)=>({name:String(i),hidden}))}}}});
+ const detail=await createSteam({key:'x',fetcher:f.fetcher}).achievements(id,10);
+ assert.deepEqual(detail.achievements.map(a=>a.hidden),[false,false,false,true,true,true]);
+});

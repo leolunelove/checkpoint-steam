@@ -62,3 +62,5 @@ dialog{background:#1c201d;border:1px solid #ffffff14;border-radius:28px;box-shad
 .map-filter{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 14px;margin:10px 0 4px;border:1px solid #ffffff18;border-radius:22px;background:transparent;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;justify-self:start}.map-filter.active{background:#c4d79718;border-color:#c4d79765;color:#d7e6bf}.map-filter:focus-visible{outline:2px solid #c4d797;outline-offset:3px}
 
 .game-card>.cloud-badges{margin:0 20px 16px}.map-badge{min-height:32px;text-decoration:none}.map-badge:hover{background:#ffffff0b;color:#e0e9d6}.map-badge:focus-visible{outline:2px solid #c4d797;outline-offset:3px}@media(max-width:700px){:is(.finish-suggestions,.shortlist-grid) .game-card>.cloud-badges{margin-left:106px}}@media(max-width:370px){:is(.finish-suggestions,.shortlist-grid) .game-card>.cloud-badges{margin-left:92px}}
+
+.finish-page .shortlist-grid{margin-bottom:28px}.map-filter{margin-bottom:16px}.remaining-rarity>span{font-size:10px}.finish-page .game-meta{display:none}

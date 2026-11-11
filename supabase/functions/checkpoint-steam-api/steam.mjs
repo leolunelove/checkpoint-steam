@@ -82,7 +82,7 @@ export function createSteam({ key, allowedId = '', fetcher = fetch, now = Date.n
     if (!progress.playerstats?.success || !Array.isArray(progress.playerstats.achievements)) throw new AppError('Achievement progress is unavailable for this game. Check Game details privacy or try again later.', 502);
     const states = new Map(progress.playerstats.achievements.map(a => [a.apiname, a]));
     const rates = new Map((global?.achievementpercentages?.achievements || []).map(a => [a.name, Number(a.percent)]));
-    const list = definitions.map(a => ({ id: a.name, name: a.displayName || a.name, description: a.description || '', hidden: Boolean(a.hidden), icon: a.icon, iconGray: a.icongray, unlocked: states.get(a.name)?.achieved === 1, unlockedAt: states.get(a.name)?.unlocktime || 0, rarity: rates.has(a.name) ? rates.get(a.name) : null }));
+    const list = definitions.map(a => ({ id: a.name, name: a.displayName || a.name, description: a.description || '', hidden: a.hidden === true || a.hidden === 1 || a.hidden === "1", icon: a.icon, iconGray: a.icongray, unlocked: states.get(a.name)?.achieved === 1, unlockedAt: states.get(a.name)?.unlocktime || 0, rarity: rates.has(a.name) ? rates.get(a.name) : null }));
     return { status: 'ready', achievements: list, ...summarize(list) };
   }
   return { library, achievements };

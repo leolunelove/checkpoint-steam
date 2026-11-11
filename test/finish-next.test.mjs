@@ -38,3 +38,7 @@ test('fewest remaining sorts by count, breaks ties by completion and retains eli
  const result=finishCandidates(games.slice(2),{demo:true,sort:'remaining'});assert.deepEqual(result.map(g=>g.id),[22,21,20]);assert.deepEqual(result.map(g=>g.total-g.unlocked),[1,1,5]);
  assert.deepEqual(finishCandidates(games.slice(2),{demo:true}).map(g=>g.id),[20,22,21]);
 });
+test('stale availability cannot qualify a recommendation',async()=>{
+ const game=make(9876599);await loadAvailability(game.id,async()=>({appId:game.id,fetchedAt:Date.now()-25*60*60*1000,achievementCount:2,flags:[]}));
+ assert.deepEqual(finishCandidates([game]),[]);
+});
